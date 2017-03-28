@@ -83,7 +83,7 @@ class App extends Component {
 
           {/* FORM TO ADD BUTTONS */}
           <form style={{ borderColor: this.state.objStyle.backgroundColor}}>
-            <p style={{color: this.state.objStyle.backgroundColor}}>
+            <p>
 				Add a new color :
 			</p>
             <p>
