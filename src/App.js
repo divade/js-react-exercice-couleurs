@@ -1,25 +1,26 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {ChromePicker} from 'react-color';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+  state = {
       // Set the main Style
-      objStyle: { backgroundColor: '#edb31c' },
+    objStyle: {
+      backgroundColor: '#edb31c'
+      },
+      colors : [
+                { id: 1, name: 'violet', color: '#f5aafb'},
+                { id: 2, name: 'marin blue', color: '#2b4d99'},
+				{ id: 3, name: 'pale green', color: '#aafbde'},
+				{ id: 4, name: 'vermillon', color: '#fe532e'},
+				{ id: 5, name: 'sky blue', color: '#82c4fa'},
+				{ id: 6, name: 'salmon', color: '#fb8b8b'}
+      ],
       newColorName: '',
       newColorColor: ''
     };
-  }
-  colors = [
-    { id: 1, name: 'violet', color: '#f5aafb' },
-	{ id: 2, name: 'marin blue', color: '#2b4d99'},
-	{ id: 3, name: 'pale green', color: '#aafbde'},
-	{ id: 4, name: 'vermillon', color: '#fe532e'},
-	{ id: 5, name: 'sky blue', color: '#82c4fa' },
-	{ id: 6, name: 'salmon', color: '#fb8b8b'}
-  ]
+
 
   changeColor = (color) => {
     this.setState({
@@ -35,18 +36,22 @@ class App extends Component {
     });
   }
 
+  changeColorPicker = (color, event ) => {
+    this.setState({newColorColor: color.hex});
+  }
+
   addNewcolor = (e) => {
     e.preventDefault();
     const newColorMade = {
-      id: this.colors.length + 1,
+      id: this.state.colors.length + 1,
       name: this.state.newColorName,
       color: this.state.newColorColor
-    }
-    this.colors = [
-      ...this.colors,
-      newColorMade
-    ];
-    this.setState({newColorName: '', newColorColor: ''});
+    };
+    this.setState({
+      colors : [...this.state.colors, newColorMade],
+      newColorName: '',
+      newColorColor: ''
+    });
   };
 
   render() {
@@ -74,40 +79,50 @@ class App extends Component {
 
           {/* BUTTONS LIST */}
           <ul>
-            {this.colors.map(item => <li key={item.id}>
-              <button style={{
-                backgroundColor: item.color
-              }} onClick={() => this.changeColor(item.color)}>{item.name}</button>
+            {this.state.colors.map(item => <li key={item.id}>
+              <button
+                  style={{ backgroundColor: item.color }}
+                  onClick={() => this.changeColor(item.color)}>
+				  {item.name}
+              </button>
             </li>)}
           </ul>
 
           {/* FORM TO ADD BUTTONS */}
-          <form style={{ borderColor: this.state.objStyle.backgroundColor}}>
+          <form
+			  onSubmit={this.addNewcolor}
+			  style={{ borderColor: this.state.objStyle.backgroundColor }}>
             <p>
-				Add a new color :
-			</p>
+              Add a new color :
+            </p>
             <p>
               <label htmlFor="newColorName">Name :</label>
               <input
 				  type="text"
 				  name="newColorName"
-				  style={{color: this.state.objStyle.backgroundColor}}
+				  style={{ color: this.state.newColorColor}}
 				  onChange={this.changeNewColor}
-				  value={this.state.newColorName}/>
+				  value={this.state.newColorName}
+			  />
             </p>
             <p>
               <label htmlFor="newColorColor">Color (HEX) :</label>
               <input
 				  type="text"
-				  name="newColorColor"
-				  style={{color: this.state.objStyle.backgroundColor}}
+                  name="newColorColor"
+                  style={{ color: this.state.objStyle.backgroundColor }}
 				  onChange={this.changeNewColor}
 				  value={this.state.newColorColor}/>
             </p>
+            <ChromePicker
+				onChangeComplete={this.changeColorPicker}
+			/>
             <button
+				type='submit'
 				style={{ color: this.state.objStyle.backgroundColor }}
-				onClick={this.addNewcolor}
-				>Add new color !</button>
+                >
+				Add new color !
+			</button>
           </form>
         </section>
 
