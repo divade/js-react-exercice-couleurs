@@ -1,32 +1,39 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Header from './Header.js';
+import ColorList from './ColorList.js';
 import {ChromePicker} from 'react-color';
+import TitleForm from './Form/TitleForm.js';
+import SecondInput from './Form/SecondInput.js';
+import FirstInput from './Form/FirstInput.js';
+import Button from './Form/Button.js';
+import Footer from './footer/Footer.js';
 
 class App extends Component {
   state = {
       // Set the main Style
     objStyle: {
       backgroundColor: '#edb31c'
-      },
-      colors : [
-                { id: 1, name: 'violet', color: '#f5aafb'},
-                { id: 2, name: 'marin blue', color: '#2b4d99'},
+    },
+    colors : [
+        { id: 1, name: 'violet', color: '#f5aafb'},
+        { id: 2, name: 'marin blue', color: '#2b4d99'},
 				{ id: 3, name: 'pale green', color: '#aafbde'},
 				{ id: 4, name: 'vermillon', color: '#fe532e'},
 				{ id: 5, name: 'sky blue', color: '#82c4fa'},
 				{ id: 6, name: 'salmon', color: '#fb8b8b'}
-      ],
-      newColorName: '',
-      newColorColor: ''
-    };
+    ],
+    newColorName: '',
+    newColorColor: ''
+  };
 
 
   changeColor = (color) => {
     this.setState({
       objStyle: {
         backgroundColor: color
-      }
+      },
     });
   }
 
@@ -78,57 +85,40 @@ class App extends Component {
           </div>
 
           {/* BUTTONS LIST */}
-          <ul>
-            {this.state.colors.map(item => <li key={item.id}>
-              <button
-                  style={{ backgroundColor: item.color }}
-                  onClick={() => this.changeColor(item.color)}>
-				  {item.name}
-              </button>
-            </li>)}
-          </ul>
+          <ColorList colors={this.state.colors} changeColor={this.changeColor} />
+
+
 
           {/* FORM TO ADD BUTTONS */}
           <form
-			  onSubmit={this.addNewcolor}
-			  style={{ borderColor: this.state.objStyle.backgroundColor }}>
-            <p>
-              Add a new color :
-            </p>
-            <p>
-              <label htmlFor="newColorName">Name :</label>
-              <input
-				  type="text"
-				  name="newColorName"
-				  style={{ color: this.state.newColorColor}}
-				  onChange={this.changeNewColor}
-				  value={this.state.newColorName}
-			  />
-            </p>
-            <p>
-              <label htmlFor="newColorColor">Color (HEX) :</label>
-              <input
-				  type="text"
-                  name="newColorColor"
-                  style={{ color: this.state.objStyle.backgroundColor }}
-				  onChange={this.changeNewColor}
-				  value={this.state.newColorColor}/>
-            </p>
-            <ChromePicker
-				onChangeComplete={this.changeColorPicker}
-			/>
-            <button
-				type='submit'
-				style={{ color: this.state.objStyle.backgroundColor }}
-                >
-				Add new color !
-			</button>
-          </form>
-        </section>
+            onSubmit={this.addNewcolor}
+            style={{ borderColor: this.state.objStyle.backgroundColor }}>
+            <TitleForm label={'frere change la couleur'} />
+            <FirstInput
+              newColorColor={this.state.newColorColor}
+              changeNewColor={this.changeNewColor}
+              newColorName={this.state.newColorName}
+             />
+             <SecondInput
+               backgroundColor={this.state.objStyle.backgroundColor}
+               changeNewColor={this.changeNewColor}
+               newColorColor={this.state.newColorColor}
+             />
 
-        <footer style={this.state.objStyle}>
-          <p>Powered with Create React App</p>
-        </footer>
+            <ChromePicker
+          onChangeComplete={this.changeColorPicker}
+          />
+            <Button
+          backgroundColor={this.state.objStyle.backgroundColor }
+          text={'Add new button'}
+        />
+          </form>
+
+        </section>
+        <Footer
+        objStyle={this.state.objStyle}
+        FooterText={'powered with create react app'}
+      />
       </div>
     );
   }
